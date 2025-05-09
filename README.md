@@ -32,6 +32,6 @@ This toolkit supports **multi-modal data fusion**, enabling precise thermal anal
 ## 📄 Citation
 
 If you use Thermitage, please cite:  
-*InfraRed Thermography and 3D-Data Fusion for Architectural Heritage: A Scoping Review* (https://doi.org/10.3390/rs15092422)
+* Sutherland, N., Marsh, S., Priestnall, G., Bryan, P., Mill, J. 2023. InfraRed Thermography and 3D-Data Fusion for Architectural Heritage: A Scoping Review. Remote Sensing, 15, 2422, pp. 1-35. https://doi.org/10.3390/rs15092422
 
 
