@@ -13,7 +13,7 @@
 - **Cultural Heritage Focus**  
   Enhance the principles and practices of IRT-3DDF for non-destructive testing techniques (NDT) within cultural and architectural heritage.
 
-## 🛠 Features
+## 🛠 Features:
 
 - 🖼 **IRT Datasets:** A collection of Infrared Thermography datasets across sensors, cameras and platforms. This includes: (1) tandem sensors featured within the same thermal camera housing, thermal cameras of varying resolution, IR wavelengths and sensitivity; (2) complementary datasets coming from additional digital cameras, device screenshots or  advanced file formats; and (3) IRT coming from terrestrial (independent cameras or stereo set-ups) and aerial (UAV or fixed-wing aircraft) devices.
 - 🧠 **IRT Benchmarking:** A comprehsnive collection of thermal infrared (TIR) images denoted for training \& validation of machine- and deep-learning models.  
