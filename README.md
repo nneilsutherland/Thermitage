@@ -4,7 +4,7 @@
 
 ## 🔍 Core Objectives
 
-- **IRT & Photogrammetry Integration (IRT-3DDF)**  
+- **IRT & Photogrammetry Data Fusion**  
   Advance the field of InfraRed Thermography and 3D-data Fusion (IRT-3DDF).
 
 - **IRT for Deep Learning Benchmarking**  
