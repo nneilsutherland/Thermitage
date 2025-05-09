@@ -21,10 +21,10 @@
 
 ## 📦 Structure
 
-/data → Sample IRT datasets separetd by location, modalties and processes
-/docs → Documentation for IRT imaging survey best practice, data sharing and re-use policies
-/scripts → Thermal + geometric integration scripts (both aerial and terrestrial applications)
-/utils → Tools for IRT data pre-processing, analysis and visualisation
+- **/data** → Sample IRT datasets separetd by location, modalties and processes
+- **/docs** → Documentation for IRT imaging survey best practice, data sharing and re-use policies
+- **/scripts** → Thermal + geometric integration scripts (both aerial and terrestrial applications)
+- **/utils** → Tools for IRT data pre-processing, analysis and visualisation
 
 ## 📄 Citation
 
