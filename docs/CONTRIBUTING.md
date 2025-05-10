@@ -1,13 +1,19 @@
+## Term Definitions:
+
+RGB
+TIR
+VIS
+
 ## **Project, Dataset and File Naming Conventions:**
 
 ### Project: 
 
 A project folder should be created to conatin all datasets, metadata and results related to a single project. If repeated visits to the same project / location have been unddretaken, please include these within the same project and specify the necessity / purpose for repeated surveys within the project documentation
 
-1.	**Project Code:** A logical 2-5 character abbreviation of the project / location. (e.g., GATE for Lenton Lodge Gatehouse, ARCO for Arco Castle)
-2.	**Project Name:** A more detailed name for the project / location (e.g., LentonLodgeGatehouse or ArcoCastle)
-3.	**Project Location:** Subregion and country tags in accordance to ISO 3166-2 specifications (e.g., NG_UK for Nottinghamshire, UK; TN_ITA for Trentino, Italy)
-4.	**Date:** Project date, or specified date for entire project in YYYY_MM_DD format (e.g., 2025_05_10 for the 10th May 2025)
+1. **Project Code:** A logical 2-5 character abbreviation of the project / location. (e.g., GATE for Lenton Lodge Gatehouse, ARCO for Arco Castle)
+2. **Project Name:** A more detailed name for the project / location (e.g., LentonLodgeGatehouse or ArcoCastle)
+3. **Project Location:** Subregion and country tags in accordance to ISO 3166-2 specifications (e.g., NG_UK for Nottinghamshire, UK; TN_ITA for Trentino, Italy)
+4. **Date:** Project date, or specified date for entire project in YYYY_MM_DD format (e.g., 2025_05_10 for the 10th May 2025)
 
 E.g., GATE_LentonLodgeGatehouse_NG_UK_2025_05_10, ARCO_ArcoCastle_TN_ITA_2024_10_28, DUNR_DunrobinHouse_CV_UK_2023_10_25
 
@@ -19,18 +25,22 @@ A Dataset folder is used to contain all the images collected within an IRT imagi
 2. **Date:** The date for the captured survey (note: this may be different from the project date and is required for surveys undertaken across multiple days)  
 3. **Survey Type:** A designation used to determine the purpose and content of the dataset  
    
-   a. **IRT Bands:** Near- (NIR), Short-Wave (SWIR), Mid-Wave (MWIR), Long-Wave (LWIR), Far- (FIR)  
-   b. **IRT Approach:** Passive Thermography (PASS), Active Thermography (ACTIV), Pulsed Thermography (PT), Lock-In Thermography (LT), Step Heating Thermography (SHT), Modulated Thermography (MT), Vibrothermography (VT)  
-   c. **Application:** Close-Range Photogrammetry (CRP), Un-manned Aerial Vehicle (UAV), Learning-based Training / Validation Dataset (LEARN)
+      a. **IRT Bands:** Near- (NIR), Short-Wave (SWIR), Mid-Wave (MWIR), Long-Wave (LWIR), Far- (FIR)  
+      b. **IRT Approach:** Passive Thermography (PASS), Active Thermography (ACTIV), Pulsed Thermography (PT), Lock-In Thermography (LT), Step Heating Thermography (SHT), Modulated Thermography (MT), Vibrothermography (VT)  
+      c. **Application:** Close-Range Photogrammetry (CRP), Un-manned Aerial Vehicle (UAV), Learning-based Training / Validation Dataset (LEARN)
 
 #### Sub Folders:
-4.	Dataset Folders Type:
-a.   RadJPG = Radiometric .jpg files
-b.   RadTIFF = Radiometric .tiff or .tif files
-  f.	ScrSh = Screenshots
-  g.	ScrRc = Screen Recording
-  h.	SupResJPG = Workswell Wiris Pro SuperResolution JPG
-  i.	VisJPG = Workswell Wiris Pro Visible JPG
+
+If a thermal camera allows for multiple file formats, images and previewes to be capture simultaneously, separated sub-folders should be specified. Although this will be camera specific, we recommend specifying the modality (e.g., 'Rad' for Radiometric, SupRes for Super Resolution), the sensor (e.g., TIR, VIS, RGB) and file format (e.g., JPG, TIFF, PNG):
+
+      a.    RadJPG = InfraRed sensor .jpg files
+      b.    RadTIFF = InfraRed .tiff or .tif files
+      c.    SupResJPG =  SuperResolution .jpg files
+      d.    VisJPG = Visible sensor .jpg files
+      e.    ScrShJPG = Screenshots 
+      f.    ScrRc = Screen Recording
+
+### Files:
 
 
 ##  References:
