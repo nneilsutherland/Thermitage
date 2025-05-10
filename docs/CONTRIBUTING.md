@@ -1,8 +1,9 @@
 ## Term Definitions:
 
-RGB
-TIR
-VIS
+
+- **TIR:** Infrared images coming from a thermal camera
+- **VIS:** Images coming from the visible spectrum sensor within the thermal infrared camera. This designation is important as VIS images should be accompanied by a corresponding (and identifiable) TIR pair. 
+- **RGB:** Images coming from separate digital cameras 
 
 ## **Naming Conventions (Projects, Datasets, Files):**
 
