@@ -2,9 +2,10 @@
 
 **Thermitage** is a research-oriented repository dedicated to advancing the integration of InfraRed Thermography (IRT) for 3D photogrammetric data fusion. In addition, this repository will provide benchmarking for the development of machine- and deep learning tools tailored to cultural heritage applications.
 
-![Thermal Example](misc/GATE_VIS.gif)
-
-![Thermal Example](misc/GATE_TIR.gif)
+<p align="center">
+  <img src="misc/GATE_VIS.gif" width="45%" />
+  <img src="misc/GATE_TIR.gif" width="45%" />
+</p>
 
 ## 🔍 Core Objectives:
 
