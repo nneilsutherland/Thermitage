@@ -1,4 +1,4 @@
-## **Project, Dataset and File Naming Conventions:**
+## **Naming Conventions (Projects, Datasets, Files):**
 
 ### Project: 
 
