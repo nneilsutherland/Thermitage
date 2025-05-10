@@ -1,15 +1,31 @@
-## Term Definitions:
+# Contributing to Thermitage
 
+Thermitage is designed to be a benchmarking repository for members of the IRT and digital cultural heritage (DCH) communities to access, analyse and share datasets for the advancement of IRT. Therefore, we hope contributors will engage with fellow members to build a FAIR repository that can be continually improved and developed with new features.
+
+## Types of COntributions:
+
+You can contribute by:
+- Adding new datasets (following the folder structure and metadata templates)
+- Improving documentation (README, metadata, guides)
+- Contributing code (e.g., data processing scripts, visualization tools)
+- Submitting bug reports or feature requests
+- Helping with translations or outreach
+
+## Term Definitions:
 
 - **TIR:** Infrared images coming from a thermal camera
 - **VIS:** Images coming from the visible spectrum sensor within the thermal infrared camera. This designation is important as VIS images should be accompanied by a corresponding (and identifiable) TIR pair. 
 - **RGB:** Images coming from separate digital cameras 
 
+## Data Structure:
+
+All data deposited into Thermitage must be deposited with a logical data structure, however no universal structure is provided. We are happy to work with depositors to help you determine the best structure for your data set.
+
 ## **Naming Conventions (Projects, Datasets, Files):**
 
 ### Project: 
 
-A project folder should be created to conatin all datasets, metadata and results related to a single project. If repeated visits to the same project / location have been unddretaken, please include these within the same project and specify the necessity / purpose for repeated surveys within the project documentation
+A project folder should be created to contain all datasets, metadata and results related to a single project. If repeated visits to the same project / location have been undertaken, please include these within the same project and specify the necessity / purpose for repeated surveys within the project documentation
 
 1. **Project Code:** A logical 2-5 character abbreviation of the project / location. (e.g., GATE for Lenton Lodge Gatehouse, ARCO for Arco Castle)
 2. **Project Name:** A more detailed name for the project / location (e.g., LentonLodgeGatehouse or ArcoCastle)
@@ -43,6 +59,9 @@ If a thermal camera allows for multiple file formats, images and previewes to be
 
 ### Files:
 
+### Metadata:
+
+Metadata should be generated for each subfolder 
 
 ##  References:
 
