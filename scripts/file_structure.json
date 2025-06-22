@@ -1,0 +1,21 @@
+{
+      "General":{},
+      "Images and Visuals": {
+      "Screenshots": {},
+      "Orthomosaics":{}
+      },
+      "Datasets": {
+            "CRP":{},
+            "TLS":{},
+            "UAV":{},
+            "IRT":{}
+      },
+      "Exported Markers": {},
+      "Exported Cameras": {},
+      "Exported Reference": {},
+      "Camera Parameters":{},
+      "Imported Cameras":{},
+      "Imported Markers":{},
+      "QGIS":{},
+      "Miscellaneous": {}
+}
