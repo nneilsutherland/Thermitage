@@ -34,6 +34,6 @@
 ## 📄 Citations:
 
 If you use Thermitage, please cite:  
-* Sutherland, N., Marsh, S., Priestnall, G., Bryan, P., Mill, J. 2023. InfraRed Thermography and 3D-Data Fusion for Architectural Heritage: A Scoping Review. Remote Sensing, 15, 2422, pp. 1-35. https://doi.org/10.3390/rs15092422
+* Sutherland, N.; Marsh, S.; Remondino, F.; Perda, G.; Bryan, P.; Mills, J. Geometric Calibration of Thermal Infrared Cameras: A Comparative Analysis for Photogrammetric Data Fusion. Metrology 2025, 5, 43. https:// doi.org/10.3390/metrology5030043
 
 
