@@ -1,0 +1,1 @@
+Explanation of how to generate vignetting correction image
