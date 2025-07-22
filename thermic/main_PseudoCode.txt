@@ -2,7 +2,7 @@ Pseudo code for
 
 - - - - - - INPUT FOLDER - - - - - - - 
 1. Take a filepath to a folder
-2. Check folder: number, filetypes
+2. 
 
 
 - - - - - - PRE-PROCESSING OF IMAGES - - - - - - - 
@@ -13,16 +13,8 @@ Pseudo code for
 PROCESS
 
 - - - - - - INPUTS: - - - - - - 
-(determine what form these will come in, all within a folder, text files for features?)
 
-Folder Path
-Vignetting Correction image
-NUCs
 
 
 OUTPUTS:
 
-plot showing features over time
-corrected imagery
-vignetting images?
-Plots between NUCS
