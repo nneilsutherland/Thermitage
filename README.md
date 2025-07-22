@@ -35,5 +35,3 @@
 
 If you use Thermitage, please cite:  
 * Sutherland, N.; Marsh, S.; Remondino, F.; Perda, G.; Bryan, P.; Mills, J. Geometric Calibration of Thermal Infrared Cameras: A Comparative Analysis for Photogrammetric Data Fusion. Metrology 2025, 5, 43. [https://doi.org/10.3390/metrology5030043](https://doi.org/10.3390/metrology5030043)
-
-

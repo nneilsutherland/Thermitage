@@ -1,0 +1,22 @@
+Pseudo code for 
+
+- - - - - - INPUT FOLDER: - - - - - - - 
+1. Take a filepath to a folder
+2. Analyse filepath
+3. Output initial information
+      Number
+      File formats?
+
+- - - - - - PRE-PROCESSING - - - - - - - 
+1. Convert into correct format
+      16-bit TIFF
+      tSDK if necessary
+     
+- - - - - - PROCESSING - - - - - - 
+
+- - - - - - INPUTS - - - - - - 
+
+
+
+- - - - - - OUTPUTS - - - - - - 
+
