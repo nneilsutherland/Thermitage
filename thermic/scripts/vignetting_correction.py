@@ -17,23 +17,23 @@ extracts their capture timestamps from EXIF metadata, and computes a vignetting 
 image by averaging the image stack over a specified time window.
 
 Features:
-- Supports TIFF (.tif, .tiff) and JPEG (.jpg, .jpeg) formats with valid EXIF data.
-- Extracts 'DateTimeOriginal' from image metadata to determine image timing. Original images are required 
-or alternative timestamps can be integrated into the code (e.g., filename splitting if suitable).)
-- Allows optional specification of start and/or end time (relative to the first image). If no start or end times 
-are provided, the entire set of images will be averaged.
-- Preserves 16-bit image in the output to retain digital number values (representative of temperature).
+      - Supports TIFF (.tif, .tiff) and JPEG (.jpg, .jpeg) formats with valid EXIF data.
+      - Extracts 'DateTimeOriginal' from image metadata to determine image timing. Original images are required 
+      or alternative timestamps can be integrated into the code (e.g., filename splitting if suitable).)
+      - Allows optional specification of start and/or end time (relative to the first image). If no start or end times 
+      are provided, the entire set of images will be averaged.
+      - Preserves 16-bit image in the output to retain digital number values (representative of temperature).
 
 Usage:
-  python vignetting_correction.py --input_folder /path/to/images [--start_time HH:MM:SS] [--end_time HH:MM:SS]
+      python vignetting_correction.py --input_folder /path/to/images [--start_time HH:MM:SS] [--end_time HH:MM:SS]
 
 Arguments:
-  --input_folder   Required. Path to the folder containing calibration images.
-  --start_time     Optional. Start time (HH:MM:SS) relative to the first image timestamp.
-  --end_time       Optional. End time (HH:MM:SS) relative to the first image timestamp.
+      --input_folder   Required. Path to the folder containing calibration images.
+      --start_time     Optional. Start time (HH:MM:SS) relative to the first image timestamp.
+      --end_time       Optional. End time (HH:MM:SS) relative to the first image timestamp.
 
 Example:
-  python vignetting_correction.py --input_folder ./data/calibration_set --start_time 00:00:00 --end_time 00:02:00
+      python vignetting_correction.py --input_folder ./data/calibration_set --start_time 00:00:00 --end_time 00:02:00
 """
 
 # Extract Date/Time from EXIF data (file format dependent):

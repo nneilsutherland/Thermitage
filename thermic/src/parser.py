@@ -33,14 +33,6 @@ def parse_cli() -> dict:
     #     default=None,
     # )
     parser.add_argument(
-        "-p",
-        "--pipeline",
-        type=str,
-        help="Define the pipeline (combination of local feature extractor and matcher) to use for the matching.",
-        choices=Config.get_pipelines(),
-        required=True,
-    )
-    parser.add_argument(
         "-c",
         "--config_file",
         type=str,
@@ -55,7 +47,7 @@ def parse_cli() -> dict:
             choices=["lowest", "low", "medium", "high", "highest"],
             default="high",
             help="Set the image resolution for the matching. High means full resolution images, medium is half res, low is 1/4 res, highest is x2 upsampling. Default is high.",
-        ),
+        )
     )
     parser.add_argument(
         "-t",
@@ -88,62 +80,17 @@ def parse_cli() -> dict:
         help="Image overlap, if using sequential overlap strategy",
         default=1,
     )
-    parser.add_argument(
-        "--global_feature",
-        choices=Config.get_retrieval_names(),
-        default="netvlad",
-        help="Specify image retrieval method",
-    )
-    parser.add_argument(
-        "--db_path",
-        type=str,
-        default=None,
-        help="Path to the COLMAP database to be use for covisibility pair selection.",
-    )
-    parser.add_argument(
-        "--upright",
-        action="store_true",
-        help="Enable the estimation of the best image rotation for the matching (useful in case of aerial datasets).",
-        default=False,
-    )
-    parser.add_argument(
-        "--skip_reconstruction",
-        action="store_true",
-        help="Skip reconstruction step carried out with pycolmap. This step is necessary to export the solution in Bundler format for Agisoft Metashape.",
-        default=False,
-    )
-    parser.add_argument(
-        "-f",
-        "--force",
-        action="store_true",
-        default=False,
-        help="Force overwrite of output folder",
-    )
-    parser.add_argument(
-        "-V",
-        "--verbose",
-        action="store_true",
-        default=False,
-    )
-    parser.add_argument(
-        "-g",
-        "--graph",
-        action="store_true",
-        default=False,
-        help="Show view graph of matches (currently supported for small networks).",
-    )
-    parser.add_argument(
-        "--openmvg",
-        help="Path to openmvg config file'",
-        default=None,
-    )
-    parser.add_argument(
-        "--camera_options",
-        help="Path to camera options yaml file, e.g. config/cameras.yaml",
-        default="./config/cameras.yaml",
-    )
     args = parser.parse_args()
 
-   
-
     return vars(args)
+
+# - - - - - - - - - - - COMMENTS - - - - - - - - - - -
+
+"""
+Arguments for
+Input folders
+Generated Figures
+
+
+
+"""
