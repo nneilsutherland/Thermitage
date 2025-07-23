@@ -3,7 +3,11 @@
 import argparse
 
 def parse_cli() -> dict:
-    """Parse command line arguments and return a dictionary with the input arguments. If --gui is specified, run the GUI interface and return the arguments from the GUI."""
+
+    """
+    Parse command line arguments and return a dictionary with the input arguments. 
+    If --gui is specified, run the GUI interface and return the arguments from the GUI.
+    """
 
     parser = argparse.ArgumentParser(
         description="Matching with hand-crafted and deep-learning based local features and image retrieval."
@@ -15,7 +19,7 @@ def parse_cli() -> dict:
         "-d",
         "--dir",
         type=str,
-        help="Project directoryt, containing a folder 'images', in which all the images are present and where the results will be saved.",
+        help="Project directory, containing a folder 'images', in which all the images are present and where the results will be saved.",
         default=None,
     )
     parser.add_argument(
@@ -25,13 +29,6 @@ def parse_cli() -> dict:
         help="Folder containing images to process. If not specified, an 'images' folder inside the project folder is assumed.",
         default=None,
     )
-    # parser.add_argument(
-    #     "-o",
-    #     "--outs",
-    #     type=str,
-    #     help="Output folder. If None, the output folder will be created inside the project folder.",
-    #     default=None,
-    # )
     parser.add_argument(
         "-c",
         "--config_file",
@@ -90,6 +87,13 @@ def parse_cli() -> dict:
 Arguments for
 Input folders
 Generated Figures
+NUCs
+matched feature buffer
+plots - yes/no
+correction - 1st order / 2nd order polynomial
+colmap features - sift, asift, 
+keypoints - number
+numberKptsDetected - number of features for plotting to be successful
 
 
 
