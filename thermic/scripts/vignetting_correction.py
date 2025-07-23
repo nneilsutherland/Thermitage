@@ -1,165 +1,156 @@
-# Import necessary packages
 import os
 import numpy as np
-import glob
-import matplotlib.pyplot as plt
-from PIL import Image
-from scipy.interpolate import griddata
-from mpl_toolkits.axes_grid1 import make_axes_locatable
-import pandas as pd
+from PIL import Image, ExifTags
 import argparse
+import pandas as pd
+from datetime import datetime
+import exifread
+import warnings
 
-def vignetting_correction(input_folder, output_folder, start_time, end_time, target_format):
-      # Create the output folder if it doesn't exist:
-      if not os.path.exists(output_folder):
-            os.makedirs(output_folder)
-
-      
-      # Get a list of all image files in the input folder:
-      image_files = [f for f in os.listdir(input_folder) if os.path.isfile(os.path.join(input_folder, f)) and f.lower().endswith(('.png', '.jpg', '.jpeg', '.tif', '.tiff'))]
-      print("Number of files loaded:", len(image_files))
-
-      # Access Folder:
-      tiff_files = glob.glob(os.path.join(input_folder, "*.tiff"))
-      print(f"Found {len(tiff_files)} TIFF files")
-
-      # Assess No. of Images:
-      if len(tiff_files) == 0:
-            print("ERROR: No TIFF files found! Check your folder path.")
-      else:
-            print("Sample files found:")
-      for i, file in enumerate(tiff_files[:3]):  # Show first 3 files
-            print(f"{i+1}. {os.path.basename(file)}")
-      if len(tiff_files) > 5:
-            print(f"... and {len(tiff_files) - 5} more files")
-
-      # Check First 3 Files: 
-      sample_files = tiff_files[:3]  
-      print("Checking image dimensions:")
-      for i, file_path in enumerate(sample_files):
+# Extract Date/Time from EXIF data (file format dependent):
+def extract_exif_timestamp(image_path):
+      ext = os.path.splitext(image_path)[1].lower()
+     
+      # === JPEG and JPG ===
+      if ext in ['.jpg', '.jpeg', '.JPG']:
             try:
-                  with Image.open(file_path) as img:
-                        filename = os.path.basename(file_path)
-                        width, height = img.size
-                        print(f"{i+1}. {filename}: {width}x{height} pixels")
+                  with Image.open(image_path) as img:
+                        exif = img._getexif() # type: ignore
+                        if exif:
+                              for tag, value in exif.items():
+                                    decoded = ExifTags.TAGS.get(tag, tag)
+                                    if decoded == 'DateTimeOriginal':
+                                          return datetime.strptime(value, "%Y:%m:%d %H:%M:%S")
             except Exception as e:
-                  print(f"Error reading {file_path}: {str(e)}")
-      
-      file_paths = []
-timestamps = []
-absolute_seconds = []
+                  print(f"[WARNING] JPG or JPEG EXIF read failed for {os.path.basename(image_path)}: {e}")
 
-# Parse timestamps from filenames
-for file_path in tiff_files:
-    filename = os.path.basename(file_path)
-    timestamp_raw = filename.replace('-radiometric.tiff', '')
-    time_parts = timestamp_raw.split('-')
+      # === TIFF ===
+      elif ext in ['.tif', '.tiff']:
+            try:
+                  with open(image_path, 'rb') as f:
+                        tags = exifread.process_file(f, stop_tag='Image DateTimeOriginal')
+                        for tag in tags.keys():
+                              if tag == 'Image DateTimeOriginal':
+                                    dt_str = str(tags[tag])
+                                    return datetime.strptime(dt_str, "%Y:%m:%d %H:%M:%S")
+            except Exception as e:
+                  print(f"[WARNING] TIFF EXIF read failed for {image_path}: {e}")
 
-    if len(time_parts) >= 4:
-        try:
-            h, m, s, ms = map(int, time_parts[:4])
-            total_sec = h * 3600 + m * 60 + s + ms / 1000
-            timestamp_str = f"{h:02d}:{m:02d}:{s:02d}.{ms:03d}"
-            file_paths.append(file_path)
-            timestamps.append(timestamp_str)
-            absolute_seconds.append(total_sec)
-        except ValueError:
-            file_paths.append(file_path)
-            timestamps.append("Invalid")
-            absolute_seconds.append(None)
-    else:
-        file_paths.append(file_path)
-        timestamps.append("Invalid")
-        absolute_seconds.append(None)
-
-      # Compute elapsed times from first valid timestamp
-      valid_times = [t for t in absolute_seconds if t is not None]
-      if valid_times:
-      first_time = min(valid_times)
-      elapsed_seconds = [
-            int(t - first_time) if t is not None else None for t in absolute_seconds
-      ]
-      elapsed_timestr = [
-            f"{int(t // 3600):02d}:{int((t % 3600) // 60):02d}:{int(t % 60):02d}"
-            if t is not None else "Invalid"
-            for t in elapsed_seconds
-      ]
       else:
-      elapsed_seconds = [None] * len(file_paths)
-      elapsed_timestr = ["Invalid"] * len(file_paths)
+            print(f"[INFO] Unsupported or unhandled format for EXIF extraction: {image_path}")
 
-      df = pd.DataFrame({
-      "file_path": file_paths,
-      "timestamp_OBJ": timestamps,
-      "absolute_seconds": absolute_seconds,
-      "elapsed_seconds": elapsed_seconds,
-      "timestamp_STR": elapsed_timestr,
-      })
+      return None
 
-      df = df.sort_values(by='elapsed_seconds', ascending=True).reset_index(drop=True)
-      print(f"DataFrame created with shape: {df.shape}")
-      print(f"Columns: {list(df.columns)}")
+# Create DataFrame with Files and Timestamps:
+def load_images_with_timestamps(input_folder):
+      supported_exts = ('.tif', '.tiff', '.jpg', '.jpeg', '.JPG', '.png')
+      image_data = []
 
-      df.head(15)
-    
-    def vignetting_image(tiff_files, elapsed_timestamps, start_time_str, end_time_str):
-    """
-    Load and average the WWP 16-bit images within a given time range, then return
-    the vignetting map (temperature deviation from central pixel).
-    
-    Returns:
-        vignetting_map: 2D array of temperature deviation (in °C).
-    """
-    # Look up elapsed_seconds from timestamp_STR
-    start_matches = df.loc[df["timestamp_STR"] == start_time_str, "elapsed_seconds"]
-    end_matches = df.loc[df["timestamp_STR"] == end_time_str, "elapsed_seconds"]
+      print(f"[INFO] Scanning folder: {input_folder}")
+      for filename in os.listdir(input_folder):
+            if filename.lower().endswith(supported_exts):
+                  full_path = os.path.join(input_folder, filename)
+                  timestamp = extract_exif_timestamp(full_path)
+                  if timestamp:
+                        image_data.append((full_path, timestamp))
+                  else:
+                        print(f"[WARNING] No EXIF timestamp for {filename}")
 
-    if start_matches.empty or end_matches.empty:
-        raise ValueError("Start or end timestamp_STR not found in DataFrame.")
+      df = pd.DataFrame(image_data, columns=['file_path', 'timestamp'])
+      df.sort_values(by='timestamp', inplace=True)
+      df.reset_index(drop=True, inplace=True)
 
-    start_sec = start_matches.iloc[0]
-    end_sec = end_matches.iloc[0]
+      print(f"[INFO] Loaded {len(df)} valid images with EXIF timestamps.")
+      return df
 
-    # Select files within time range
-    selected_files = [
-        f for f, ts in zip(tiff_files, elapsed_timestamps)
-        if ts is not None and start_sec <= ts <= end_sec
-        ]
+# Filter calibration images based on start and end times (HH:MM:SS):
+def filter_images_by_time(df, start_time=None, end_time=None):
+      base_time = df['timestamp'].iloc[0]  # Timestamp of the first image
+      df['elapsed'] = df['timestamp'].apply(lambda t: (t - base_time).total_seconds())
 
-    if not selected_files:
-        raise ValueError("No images found in the given time range.")
+      # If no times are given, use all images:
+      if not start_time and not end_time:
+            print(f"[INFO] No time filtering applied. Using all {len(df)} images.")
+            return df
 
-    print(f"Averaging {len(selected_files)} 16-bit thermal images from {start_time_str} to {end_time_str}")
+      # If only end_time is given — invalid
+      if not start_time and end_time:
+            raise ValueError("Cannot specify end_time without start_time.")
 
-      # Load and stack images
+      # Convert elapsed thresholds
+      start_seconds = sum(x * int(t) for x, t in zip([3600, 60, 1], start_time.split(":"))) if start_time else 0
+      end_seconds = sum(x * int(t) for x, t in zip([3600, 60, 1], end_time.split(":"))) if end_time else float('inf')
+
+      filtered = df[(df['elapsed'] >= start_seconds) & (df['elapsed'] <= end_seconds)]
+      print(f"[INFO] Selected {len(filtered)} images from {start_time or '00:00:00'} to {end_time or 'end'} (elapsed)")
+      return filtered
+
+# Compute Vignetting Correction Image (Averaged Image):
+def compute_vignetting_average(image_paths):
       image_stack = []
-      for file_path in selected_files:
-            img = Image.open(file_path)
-            img_array = np.array(img, dtype=np.float32)
-            image_stack.append(img_array)
 
-      image_stack = np.stack(image_stack, axis=0)
-      mean_dn = np.mean(image_stack, axis=0)
+      for path in image_paths:
+            try:
+                  with Image.open(path) as img:
+                        img_array = np.array(img, dtype=np.float32)
+                        image_stack.append(img_array)
+      
+            except Exception as e:
+                  print(f"[ERROR] Skipping {path}: {e}")
 
-      # Convert to temperature in °C
-      temperature_map = (mean_dn / 40.0) - 100.0
+      if not image_stack:
+            raise ValueError("No valid images to process.")
 
-      # Subtract central pixel to get vignetting map
-      h, w = temperature_map.shape
-      center_value = temperature_map[h // 2, w // 2]
-      vignetting_map = temperature_map - center_value
+      stacked = np.stack(image_stack)
+      mean_image = np.mean(stacked, axis=0)
+      print(f"[INFO] {len(image_stack)} images averaged successfully.")
+      
+      return mean_image
 
-      return vignetting_map
+# Save Vignetting COrrection image in 16-bit .tiff (to preserve temperature / digital numbers):
+def save_output_image(mean_array, output_path):
 
-      print("Process Completed")
+      warnings.filterwarnings("ignore", category=DeprecationWarning) # Removing Pillow 13 Deprecation Error message (Image.fromarray)
+     
+      try:
+            result_image = Image.fromarray(mean_array.astype(np.uint16), mode='I;16')
+            result_image.save(output_path)
+            print(f"[SUCCESS] Saved 16-bit TIFF image to: {output_path}")
+      except Exception as e:
+            print(f"[ERROR] Could not save image: {e}")
+
+# Complete Vignetting Correction Image Function:
+def vignetting_correction(input_folder, start_time=None, end_time=None):
+      df = load_images_with_timestamps(input_folder)
+      filtered_df = filter_images_by_time(df, start_time, end_time)
+
+      if filtered_df.empty:
+            print("[ERROR] No images found in the specified time range.")
+            return
+
+      mean_array = compute_vignetting_average(filtered_df['file_path'].tolist())
+
+      if start_time and end_time:
+            suffix = f"{start_time.replace(':', '')}_to_{end_time.replace(':', '')}"
+      elif start_time:
+            suffix = f"{start_time.replace(':', '')}_to_END"
+      else:
+            suffix = "ALL"
+
+      output_filename = f"VignCorrImg_{suffix}.tiff"
+      output_path = os.path.join(input_folder, output_filename)
+      save_output_image(mean_array, output_path)
 
 if __name__ == "__main__":
-      # Parse command-line arguments
-      parser = argparse.ArgumentParser(description="Enhance images in a folder to a target image format using OpenCV and ImageJ.")
-      parser.add_argument("--input_folder", type=str, help="Path to the folder containing input images.")
-      parser.add_argument("--output_folder",type=str, help="Path to the folder where enhanced images will be saved. If not provided, it will be created within the input folder.")
-      parser.add_argument("--target_format", type=str, help="Desired Vignetting COrrection Image format (e.g., ).")
-      args = parser.parse_args()
+     parser = argparse.ArgumentParser(description="Compute a vignetting correction image from a folder of thermal images.")
+     parser.add_argument("--input_folder", type=str, required=True, help="Path to the folder containing input images.")
+     parser.add_argument("--start_time", type=str, help="Start time (format: 'HH:MM:SS' from first image).")
+     parser.add_argument("--end_time", type=str, help="End time (format: 'HH:MM:SS' from first image).")
+     
+     args = parser.parse_args()
+     vignetting_correction(args.input_folder, args.start_time, args.end_time)
 
-    # Call the enhance_images function with provided arguments
-      vignetting_correction(args.input_folder, args.output_folder, args.start_time, args.end_time, args.target_format)
+    # - - - - - - - - - - - COMMENTS - - - - - - - - - - -
+
+    # Currently not working for DJI_M3T as EXIF data is missing!!!
+    # Need to find a way of maintaining EXIF data during conversion
