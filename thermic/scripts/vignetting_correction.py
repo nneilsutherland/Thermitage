@@ -7,6 +7,35 @@ from datetime import datetime
 import exifread
 import warnings
 
+"""
+Script for generating a Vignetting Correction Image from calibration-like thermal images. 
+Further details on proper set-up and execution for the generation of suitable data can be found in: 
+'docs/vignetting_correction.md'. 
+
+This script reads a sequence of thermal images (TIFF or JPEG) from a specified folder,
+extracts their capture timestamps from EXIF metadata, and computes a vignetting correction
+image by averaging the image stack over a specified time window.
+
+Features:
+- Supports TIFF (.tif, .tiff) and JPEG (.jpg, .jpeg) formats with valid EXIF data.
+- Extracts 'DateTimeOriginal' from image metadata to determine image timing. Original images are required 
+or alternative timestamps can be integrated into the code (e.g., filename splitting if suitable).)
+- Allows optional specification of start and/or end time (relative to the first image). If no start or end times 
+are provided, the entire set of images will be averaged.
+- Preserves 16-bit image in the output to retain digital number values (representative of temperature).
+
+Usage:
+  python vignetting_correction.py --input_folder /path/to/images [--start_time HH:MM:SS] [--end_time HH:MM:SS]
+
+Arguments:
+  --input_folder   Required. Path to the folder containing calibration images.
+  --start_time     Optional. Start time (HH:MM:SS) relative to the first image timestamp.
+  --end_time       Optional. End time (HH:MM:SS) relative to the first image timestamp.
+
+Example:
+  python vignetting_correction.py --input_folder ./data/calibration_set --start_time 00:00:00 --end_time 00:02:00
+"""
+
 # Extract Date/Time from EXIF data (file format dependent):
 def extract_exif_timestamp(image_path):
       ext = os.path.splitext(image_path)[1].lower()
@@ -153,4 +182,4 @@ if __name__ == "__main__":
     # - - - - - - - - - - - COMMENTS - - - - - - - - - - -
 
     # Currently not working for DJI_M3T as EXIF data is missing!!!
-    # Need to find a way of maintaining EXIF data during conversion
+    # Also need to find a way of generating for 8-bit
