@@ -136,7 +136,7 @@ def compute_vignetting_average(image_paths):
       
       return mean_image
 
-# Save Vignetting COrrection image in 16-bit .tiff (to preserve temperature / digital numbers):
+# Save Vignetting Correction image in 16-bit .tiff (to preserve temperature / digital numbers):
 def save_output_image(mean_array, output_path):
 
       warnings.filterwarnings("ignore", category=DeprecationWarning) # Removing Pillow 13 Deprecation Error message (Image.fromarray)

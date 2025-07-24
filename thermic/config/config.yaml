@@ -1,1 +1,21 @@
-Example config.yaml file
+# User configuration file
+
+general:
+  correction_order: 1st / 2nd
+
+Feature Matching:
+  FeatureDetection: SIFT, ASIFT
+  NoFeatures: 8000
+  MatchedFeaturesBuffer: 5
+  numberKptsDetected: number of features for plotting to be successful
+  
+NUC:
+  start:
+  finish: 
+  Duration:  
+  Periodicity (mins): 3
+
+visualisation:
+  generate_plot_thermic_corrections: True
+
+
